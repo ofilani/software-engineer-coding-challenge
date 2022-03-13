@@ -129,6 +129,8 @@ class ProductController extends Controller
             if ($expType == 'Illuminate\Database\Eloquent\ModelNotFoundException') {
 
                 return response()->json(['error' => true, 'error-msg' => 'Not found'], 404);
+            } else {
+                return response()->json(['error' => true, 'error-msg' => $e->getMessage()], 404);
             }
         }
 
