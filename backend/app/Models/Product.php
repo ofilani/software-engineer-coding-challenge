@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -15,4 +16,9 @@ class Product extends Model
         'price',
         'image'
     ];
+
+    public function categorie()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
