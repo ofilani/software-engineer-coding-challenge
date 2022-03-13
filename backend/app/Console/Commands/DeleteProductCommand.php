@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Product;
 use Illuminate\Console\Command;
+use App\Http\Controllers\Api\v1\ProductController;
 
 class DeleteProductCommand extends Command
 {
@@ -39,6 +40,7 @@ class DeleteProductCommand extends Command
     public function handle()
     {
         $id = $this->option('id');
+        $prodycController = new ProductController();
 
         if (Product::destroy($id)) {
 

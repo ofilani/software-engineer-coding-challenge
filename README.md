@@ -189,7 +189,7 @@ Click the link here to see the api Documentation
 
 #### Product creation can be covered by automated tests
 
-```http
+```bash
   php artisan test
 ```
 
