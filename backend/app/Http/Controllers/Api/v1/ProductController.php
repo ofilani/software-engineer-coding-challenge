@@ -57,6 +57,15 @@ class ProductController extends Controller
             if (!($imageExt == 'jpg' or $imageExt == 'jpeg' or $imageExt == 'png')) {
                 return 0;
             }
+
+            $filesize = filesize($files); // bytes
+            $filesize = round($filesize / 1024 / 1024, 1);
+
+            // check if the image Less than or equal to 1MB
+            if ($filesize <= 1) {
+                return 0;
+            }
+
             $destinationPath = 'images/products'; // upload path
             $productImage = date('YmdHis') . "." . $imageExt;
 
