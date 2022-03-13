@@ -15,7 +15,7 @@ interface EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function getPerPage(array $columns = ['*'], $perPage = 2, array $relations = []);
+    public function getPerPage(array $columns = ['*'], $perPage = 15, array $relations = []);
 
 
     /**
