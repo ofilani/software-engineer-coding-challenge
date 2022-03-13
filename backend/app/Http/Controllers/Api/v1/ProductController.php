@@ -33,7 +33,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+
+
+        if ($files = $request->file('image')) {
+
+            $imageExt = strtolower($files->getClientOriginalExtension());
+
+            // check if the file has a valid format
+            if (!($imageExt == 'jpg' or $imageExt == 'jpeg' or $imageExt == 'png')) {
+                return 0;
+            }
+            $destinationPath = 'images\products'; // upload path
+            $productImage = date('YmdHis') . "." . $imageExt;
+
+
+            $files->move($destinationPath, $productImage);
+            $request->image = $productImage;
+        }
+
+
+
+        return $this->productRepository->create($request->all());
     }
 
     /**
