@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Repository\ProductRepositoryInterface;
 
 class ProductController extends Controller
@@ -34,7 +35,17 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:55',
+            'description' => 'required|string|max:255',
+            'price' => 'required|numeric|min:1'
+        ]);
 
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 401);
+        }
 
 
         if ($files = $request->file('image')) {
@@ -45,15 +56,13 @@ class ProductController extends Controller
             if (!($imageExt == 'jpg' or $imageExt == 'jpeg' or $imageExt == 'png')) {
                 return 0;
             }
-            $destinationPath = 'images\products'; // upload path
+            $destinationPath = 'images/products'; // upload path
             $productImage = date('YmdHis') . "." . $imageExt;
 
 
             $files->move($destinationPath, $productImage);
             $request->image = $productImage;
         }
-
-
 
         return $this->productRepository->create($request->all());
     }
