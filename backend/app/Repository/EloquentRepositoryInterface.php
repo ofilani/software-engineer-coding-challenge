@@ -33,7 +33,7 @@ interface EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function searchByCategoryId(int $category_id, array $columns = ['*'],  $perPage = 15, array $relations = []);
+    public function searchByCategory(int $category_id, array $columns = ['*'],  $perPage = 15, array $relations = []);
 
 
 

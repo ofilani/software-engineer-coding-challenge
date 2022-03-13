@@ -100,4 +100,21 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function searchByName($name)
+    {
+        return response()->json($this->productRepository->searchByName($name), 200);
+    }
+
+    public function searchByPrice($min = 0, $max)
+    {
+
+        return response()->json($this->productRepository->searchByPrice($min, $max), 200);
+    }
+
+    public function searchByCategory($category_id)
+    {
+
+        return response()->json($this->productRepository->searchByCategory($category_id), 200);
+    }
 }

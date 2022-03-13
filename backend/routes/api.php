@@ -23,4 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::resource('products', ProductController::class);
+
+    Route::get('/products/name/{name}', [ProductController::class, 'searchByName']);
+
+    Route::get('/products/price/{min}/{max}', [ProductController::class, 'searchByPrice']);
+
+    Route::get('/products/category/{category_id}', [ProductController::class, 'searchByCategory']);
 });
