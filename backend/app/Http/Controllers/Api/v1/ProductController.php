@@ -24,6 +24,7 @@ class ProductController extends Controller
 
     public function index()
     {
+        return response()->json($this->productRepository->getPerPage(), 200);
     }
 
     /**
@@ -38,7 +39,7 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:55',
             'description' => 'required|string|max:255',
-            'price' => 'required|numeric|min:1'
+            'price' => 'required|numeric|min:0'
         ]);
 
 
@@ -64,7 +65,7 @@ class ProductController extends Controller
             $request->image = $productImage;
         }
 
-        return $this->productRepository->create($request->all());
+        return response()->json($this->productRepository->create($request->all()), 201);
     }
 
     /**
