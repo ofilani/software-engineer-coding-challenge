@@ -37,10 +37,11 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
+        // the price minuman should start from 0.1 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:55',
             'description' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0.1'
         ]);
 
 
