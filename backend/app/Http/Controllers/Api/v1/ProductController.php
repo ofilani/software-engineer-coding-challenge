@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Repository\ProductRepositoryInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends Controller
 {
@@ -48,6 +50,13 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->messages()], 401);
         }
 
+        $data = array();
+
+        $data['name'] = $request->name;
+        $data['price'] = $request->price;
+        $data['description'] = $request->description;
+
+
 
         if ($files = $request->file('image')) {
 
@@ -62,7 +71,7 @@ class ProductController extends Controller
             $filesize = round($filesize / 1024 / 1024, 1);
 
             // check if the image Less than or equal to 1MB
-            if ($filesize <= 1) {
+            if ($filesize >= 1) {
                 return 0;
             }
 
@@ -72,9 +81,9 @@ class ProductController extends Controller
 
             $files->move($destinationPath, $productImage);
             $request->image = $productImage;
+            $data['image'] = $request->image;
         }
-
-        return response()->json($this->productRepository->create($request->all()), 201);
+        return response()->json($this->productRepository->create($data), 201);
     }
 
     /**
@@ -108,7 +117,31 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        try {
+            //Try if the product exist
+            $product =  $this->productRepository->findById($id);
+        } catch (Exception $e) {
+            //throw $th if the product doesn't exist 
+
+            $expType =  get_class($e);
+
+            // check thrown exception type
+            if ($expType == 'Illuminate\Database\Eloquent\ModelNotFoundException') {
+
+                return response()->json(['error' => true, 'error-msg' => 'Not found'], 404);
+            }
+        }
+
+        $image = $product->image;
+
+        if ($image) {
+            unlink('images/products/' . $image);
+            return $this->productRepository->deleteById($id);
+        } else {
+
+            return $this->productRepository->deleteById($id);
+        }
     }
 
     public function searchByName($name)

@@ -102,7 +102,6 @@ class BaseRepository implements EloquentRepositoryInterface
 
 
 
-
     /**
      * Create a model.
      *
