@@ -6,28 +6,28 @@ Enjoy <3
 
 ## Author
 
--   [@Oussama Filani](https://www.github.com/oussamafilani)
+- [@Oussama Filani](https://www.github.com/oussamafilani)
 
 ## Table of contents
 
--   [UML Class Diagram](#uml-class-diagram)
--   [Product definition](#product-definition)
--   [Category definition](#category-definition)
--   [Run Locally](#run-locally)
-    -   [Installation](#Installation)
--   [Features](#features)
-    -   [Run Command](#cli-reference)
-    -   [API Reference](#api-reference)
-        -   [Api Documentation](#api-documentation)
--   [Run Tests](#testing)
--   [Repository Layer](#eloquent-queries-in-the-repository-layer)
--   [Contributing](#contributing)
--   [TODO](#todo)
--   [License](#license)
+- [UML Class Diagram](#uml-class-diagram)
+- [Product definition](#product-definition)
+- [Category definition](#category-definition)
+- [Run Locally](#run-locally)
+  - [Installation](#Installation)
+- [Features](#features)
+  - [Run Command](#cli-reference)
+  - [API Reference](#api-reference)
+    - [Api Documentation](#api-documentation)
+- [Run Tests](#testing)
+- [Repository Layer](#eloquent-queries-in-the-repository-layer)
+- [Contributing](#contributing)
+- [TODO](#todo)
+- [License](#license)
 
 ## UML Class Diagram
 
-![conception](C:\Users\admin\Desktop\youCan\Untitled Diagram.jpg)
+![conception](https://user-images.githubusercontent.com/42185573/158068389-9dd6bfc9-b06b-46c7-b4f4-93f3b150c4c4.jpg)
 
 ## Product definition
 
@@ -211,7 +211,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## TODO
 
--   [ ] Caching paginated results with Redis on Server
+- [ ] Caching paginated results with Redis on Server
 
 ## License
 
