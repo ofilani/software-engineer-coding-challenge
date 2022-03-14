@@ -1,6 +1,7 @@
 <script setup>
 import Product from "@/components/product/index.vue";
 import Header from "@/components/layout/index.vue";
+import Pagination from "@/components/pagination/index.vue";
 </script>
 
 <template>
@@ -15,11 +16,17 @@ import Header from "@/components/layout/index.vue";
           <!-- start -->
           <div class="flex gap-4 item-center flex-wrap">
             <!-- here product component -->
-            <Product />
+            <Product
+              v-for="product in products"
+              :key="product.id"
+              :product="product"
+            />
           </div>
+
           <!-- end -->
 
           <!-- here pagination component -->
+          <Pagination />
         </div>
         <div class="hidden w-4/12 -mx-8 lg:block">
           <div class="px-8 mt-10">
@@ -131,3 +138,26 @@ import Header from "@/components/layout/index.vue";
     </div>
   </div>
 </template>
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      products: [],
+    };
+  },
+
+  methods: {
+    allProduct(pageNumber = 1) {
+      axios
+        .get(`http://127.0.0.1:8000/api/v1/products?page=${pageNumber}`)
+        .then(({ data }) => (this.products = data.data))
+        .catch((err) => {});
+    },
+  },
+  created() {
+    this.allProduct();
+  },
+};
+</script>

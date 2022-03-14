@@ -1,16 +1,26 @@
 <template>
   <div class="card w-48 bg-base-100 shadow-xl">
     <figure>
-      <img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" />
+      <img
+        :src="`http://127.0.0.1:8000/images/products/${product.image}`"
+        alt="Shoes"
+      />
     </figure>
     <div class="card-body">
-      <h2 class="card-title">Shoes!</h2>
-      <p>If a dog chews</p>
+      <h2 class="card-title">{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
       <div class="card-actions justify-end">
-        <span class="text-gray-500 mt-2">$123</span>
+        <span class="text-gray-500 mt-2">{{ product.price }}</span>
 
         <button class="btn btn-primary btn-sm">Buy Now</button>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "Product",
+  props: ["product"],
+};
+</script>
