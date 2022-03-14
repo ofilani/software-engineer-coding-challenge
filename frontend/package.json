@@ -8,6 +8,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "daisyui": "^2.8.0",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
   },
