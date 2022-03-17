@@ -29,7 +29,7 @@ class BaseRepository implements EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function getPerPage(array $columns = ['*'],  $perPage = 2, array $relations = [])
+    public function getPerPage(array $columns = ['*'],  $perPage = 6, array $relations = [])
     {
         return $this->model->with($relations)->paginate(
             $perPage,
@@ -43,7 +43,7 @@ class BaseRepository implements EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function searchByName(string $name, array $columns = ['*'],  $perPage = 15, array $relations = [])
+    public function searchByName(string $name, array $columns = ['*'],  $perPage = 6, array $relations = [])
     {
         return $this->model->where('name', 'like', '%' . $name . '%')->paginate(
             $perPage,
@@ -57,7 +57,7 @@ class BaseRepository implements EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function searchByCategory(int $category_id, array $columns = ['*'],  $perPage = 15, array $relations = [])
+    public function searchByCategory(int $category_id, array $columns = ['*'],  $perPage = 6, array $relations = [])
     {
         return $this->model->where('category_id', '=', $category_id)->paginate(
             $perPage,
@@ -72,7 +72,7 @@ class BaseRepository implements EloquentRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function searchByPrice(float $min, float $max, array $columns = ['*'],  $perPage = 15, array $relations = [])
+    public function searchByPrice(float $min, float $max, array $columns = ['*'],  $perPage = 6, array $relations = [])
     {
         return $this->model->where('price', '>=', $min)->where('price', '<=', $max)->paginate(
             $perPage,

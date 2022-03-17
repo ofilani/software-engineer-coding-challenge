@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Product;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Api\v1\ProductController;
 
 class CreateProductCommand extends Command
 {
@@ -43,12 +45,38 @@ class CreateProductCommand extends Command
         $price = $this->option('price');
         $image = $this->option('image');
 
-        Product::create([
+        $validator = Validator::make([
             'name' => $name,
             'description' => $description,
             'price' => $price,
-            'image' => $image
+            'image' => $image,
+        ], [
+            'name' => ['required'],
+            'description' => ['required'],
+            'price' => ['required'],
+            'image' => ['required'],
         ]);
+
+        if ($validator->fails()) {
+            $this->info('Staff User not created. See error messages below:');
+
+            foreach ($validator->errors()->all() as $error) {
+                $this->error($error);
+            }
+            return 1;
+        }
+
+        $validator->errors()->all();
+
+
+        // $productController = new ProductController(null);
+
+        // Product::create([
+        //     'name' => $name,
+        //     'description' => $description,
+        //     'price' => $price,
+        //     'image' => $image
+        // ]);
 
         $this->info('Product Created');
 
