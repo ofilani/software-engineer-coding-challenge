@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Api\v1;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repository\ProductRepository;
+use App\Services\ProductService;
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
-    private $productRepository;
+    private $productService;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductService $productService)
     {
-        $this->productRepository = $productRepository;
+        $this->productService = $productService;
     }
 
     /**
@@ -25,7 +25,8 @@ class ProductController extends Controller
 
     public function index()
     {
-        return response()->json($this->productRepository->getPerPage(), 200);
+        $products = $this->productService->index();
+        return response()->json($products, 200);
     }
 
     /**
@@ -72,7 +73,7 @@ class ProductController extends Controller
             $request->image = $productImage;
             $data['image'] = $request->image;
         }
-        return response()->json($this->productRepository->create($data), 201);
+        return response()->json($this->productService->create($data), 201);
     }
 
     /**
@@ -109,7 +110,7 @@ class ProductController extends Controller
 
         try {
             //Try if the product exist
-            $product =  $this->productRepository->findById($id);
+            $product =  $this->productService->findById($id);
         } catch (Exception $e) {
             //throw $th if the product doesn't exist 
 
@@ -128,27 +129,27 @@ class ProductController extends Controller
 
         if ($image) {
             unlink('images/products/' . $image);
-            return $this->productRepository->deleteById($id);
+            return $this->productService->deleteById($id);
         } else {
 
-            return $this->productRepository->deleteById($id);
+            return $this->productService->deleteById($id);
         }
     }
 
     public function searchByName($name)
     {
-        return response()->json($this->productRepository->searchByName($name), 200);
+        return response()->json($this->productService->searchByName($name), 200);
     }
 
     public function searchByPrice($min = 0, $max)
     {
 
-        return response()->json($this->productRepository->searchByPrice($min, $max), 200);
+        return response()->json($this->productService->searchByPrice($min, $max), 200);
     }
 
     public function searchByCategory($category_id)
     {
 
-        return response()->json($this->productRepository->searchByCategory($category_id), 200);
+        return response()->json($this->productService->searchByCategory($category_id), 200);
     }
 }
