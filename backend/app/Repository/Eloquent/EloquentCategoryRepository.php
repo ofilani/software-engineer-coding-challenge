@@ -3,9 +3,9 @@
 namespace App\Repository\Eloquent;
 
 use App\Models\Category;
-use App\Repository\CategoryRepositoryInterface;
+use App\Repository\CategoryRepository;
 
-class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface
+class EloquentCategoryRepository extends EloquentBaseRepository implements CategoryRepository
 {
     /**
      * @var Model

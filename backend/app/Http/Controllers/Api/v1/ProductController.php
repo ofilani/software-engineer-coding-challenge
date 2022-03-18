@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api\v1;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Repository\ProductRepositoryInterface;
+use App\Repository\ProductRepository;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
     private $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
@@ -34,21 +34,10 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
 
-        // the price minuman should start from 0.1 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:55',
-            'description' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0.1'
-        ]);
-
-
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 401);
-        }
+        $request->validated();
 
         $data = array();
 

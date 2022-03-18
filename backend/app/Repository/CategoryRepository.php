@@ -5,8 +5,19 @@ namespace App\Repository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-interface EloquentRepositoryInterface
+interface CategoryRepository
 {
+
+    /**
+     * Get all models.
+     *
+     * @param array $columns
+     * @param array $relations
+     * @return Collection
+     */
+    public function all(array $columns = ['*'], array $relations = []): Collection;
+
+
     /**
      * Get model per page.
      *
@@ -16,37 +27,6 @@ interface EloquentRepositoryInterface
      * @return Collection
      */
     public function getPerPage(array $columns = ['*'], $perPage = 6, array $relations = []);
-
-
-    /**
-     * @param array $columns
-     * @param string $name
-     * @param array $relations
-     * @return Collection
-     */
-    public function searchByName(string $name, array $columns = ['*'],  $perPage = 6, array $relations = []);
-
-
-    /**
-     * @param array $columns
-     * @param int $category_id
-     * @param array $relations
-     * @return Collection
-     */
-    public function searchByCategory(int $category_id, array $columns = ['*'],  $perPage = 6, array $relations = []);
-
-
-
-    /**
-     * @param array $columns
-     * @param float $min
-     * @param float $max
-     * @param array $relations
-     * @return Collection
-     */
-    public function searchByPrice(float $min, float $max, array $columns = ['*'],  $perPage = 6, array $relations = []);
-
-
 
     /**
      * Find model by id.
