@@ -40,8 +40,7 @@ interface CategoryRepository
     public function findById(
         int $modelId,
         array $columns = ['*'],
-        array $relations = [],
-        array $appends = []
+        array $relations = []
     ): ?Model;
 
 

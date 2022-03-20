@@ -23,8 +23,8 @@ class ImageService
 
     public function unlinkImage($image, $folderName)
     {
-        if (File::exists('storage/images/' . $folderName . '/' . $image)) {
-            unlink('storage/images/' . $folderName . '/' . $image);
+        if (File::exists('images/' . $folderName . '/' . $image)) {
+            unlink('images/' . $folderName . '/' . $image);
         }
     }
 }

@@ -7,15 +7,14 @@ use Intervention\Image\Facades\Image;
 
 trait ImageUploadTrait
 {
-    protected $path  = 'app/public/images/';
+    // protected $path  = 'app/public/images/';
+    protected $path  = 'images/';
 
     public function uploadImage($name, $img, $folderName, $image_width = NULL, $image_height = NULL): string
     {
         $image_name = $this->randomImageName($name, $img);
 
-        Image::make($img->getRealPath())->resize($image_width, $image_height, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save(storage_path($this->path . $folderName . '/' . $image_name), 100);
+        $foo = Image::make($img->getRealPath())->resize($image_width, $image_height)->save($this->path . $folderName . '/' . $image_name);
 
         return $image_name;
     }
@@ -29,6 +28,6 @@ trait ImageUploadTrait
 
     protected function randomImageName($imageName, $image): string
     {
-        return Str::slug($imageName) . time() . '.' . $image->getClientOriginalExtension();
+        return Str::slug($imageName) . '-' . time() . '.' . $image->getClientOriginalExtension();
     }
 }

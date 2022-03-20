@@ -59,10 +59,9 @@ class EloquentBaseRepository
     public function findById(
         int $modelId,
         array $columns = ['*'],
-        array $relations = [],
-        array $appends = []
+        array $relations = []
     ): ?Model {
-        return $this->model->select($columns)->with($relations)->findOrFail($modelId)->append($appends);
+        return $this->model->select($columns)->with($relations)->find($modelId);
     }
 
 

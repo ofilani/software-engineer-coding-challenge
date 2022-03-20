@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Services\ImageService;
 use App\Services\ProductService;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
@@ -45,35 +45,17 @@ class ProductController extends Controller
         $data['name'] = $request->name;
         $data['price'] = $request->price;
         $data['description'] = $request->description;
+        $data['category_id'] = $request->category_id;
 
-
-
-        if ($files = $request->file('image')) {
-
-            $imageExt = strtolower($files->getClientOriginalExtension());
-
-            // check if the file has a valid format
-            if (!($imageExt == 'jpg' or $imageExt == 'jpeg' or $imageExt == 'png')) {
-                return 0;
-            }
-
-            $filesize = filesize($files); // bytes
-            $filesize = round($filesize / 1024 / 1024, 1);
-
-            // check if the image Less than or equal to 1MB
-            if ($filesize >= 1) {
-                return 0;
-            }
-
-            $destinationPath = 'images/products'; // upload path
-            $productImage = date('YmdHis') . "." . $imageExt;
-
-
-            $files->move($destinationPath, $productImage);
-            $request->image = $productImage;
-            $data['image'] = $request->image;
+        if ($request->hasFile('image')) {
+            $productImage = (new ImageService())->storeProductImage($request->name, $request->image);
         }
-        return response()->json($this->productService->create($data), 201);
+
+        $data['image'] = $productImage;
+
+        $product = $this->productService->create($data);
+
+        return response()->json($product, 201);
     }
 
     /**
@@ -84,7 +66,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        //get product by id
+        $product =  $this->productService->findById($id);
+
+        return response()->json($product, 200);
     }
 
     /**
@@ -96,7 +81,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -108,48 +92,36 @@ class ProductController extends Controller
     public function destroy($id)
     {
 
-        try {
-            //Try if the product exist
-            $product =  $this->productService->findById($id);
-        } catch (Exception $e) {
-            //throw $th if the product doesn't exist 
-
-            $expType =  get_class($e);
-
-            // check thrown exception type
-            if ($expType == 'Illuminate\Database\Eloquent\ModelNotFoundException') {
-
-                return response()->json(['error' => true, 'error-msg' => 'Not found'], 404);
-            } else {
-                return response()->json(['error' => true, 'error-msg' => $e->getMessage()], 404);
-            }
-        }
+        //Try if the product exist
+        $product =  $this->productService->findById($id);
 
         $image = $product->image;
 
         if ($image) {
-            unlink('images/products/' . $image);
-            return $this->productService->deleteById($id);
+            (new ImageService())->unlinkImage($product->image, 'products');
+            return response()->json($this->productService->deleteById($id), 200);
         } else {
-
-            return $this->productService->deleteById($id);
+            return response()->json($this->productService->deleteById($id), 200);
         }
     }
 
     public function searchByName($name)
     {
-        return response()->json($this->productService->searchByName($name), 200);
+        $products = $this->productService->searchByName($name);
+        return response()->json($products, 200);
     }
 
     public function searchByPrice($min = 0, $max)
     {
 
-        return response()->json($this->productService->searchByPrice($min, $max), 200);
+        $products = $this->productService->searchByPrice($min, $max);
+        return response()->json($products, 200);
     }
 
     public function searchByCategory($category_id)
     {
 
-        return response()->json($this->productService->searchByCategory($category_id), 200);
+        $products = $this->productService->searchByCategory($category_id);
+        return response()->json($products, 200);
     }
 }
