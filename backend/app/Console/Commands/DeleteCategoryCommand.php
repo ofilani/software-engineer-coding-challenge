@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Category;
 use Illuminate\Console\Command;
+use App\Services\CategoryService;
 
 class DeleteCategoryCommand extends Command
 {
@@ -26,9 +27,10 @@ class DeleteCategoryCommand extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CategoryService $categoryService)
     {
         parent::__construct();
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -40,9 +42,8 @@ class DeleteCategoryCommand extends Command
     {
         $id = $this->option('id');
 
-        if (Category::destroy($id)) {
+        $this->categoryService->deleteById($id);
 
-            $this->info('Category Deleted');
-        }
+        $this->info('Cateogry Deleted successfully');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Category;
 use Illuminate\Console\Command;
+use App\Services\CategoryService;
 
 class CreateCategoryCommand extends Command
 {
@@ -26,9 +27,10 @@ class CreateCategoryCommand extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CategoryService $categoryService)
     {
         parent::__construct();
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -39,12 +41,14 @@ class CreateCategoryCommand extends Command
     public function handle()
     {
 
-        $name = $this->option('name');
-        Category::create([
-            'name' => $name
-        ]);
+        $data = [
+            'name' => $this->option('name')
+        ];
 
-        $this->info('Category Created');
+
+        $this->categoryService->create($data);
+
+        $this->info('Category created successfully');
 
         return 0;
     }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Product;
 use Illuminate\Console\Command;
+use App\Services\ProductService;
 
 class DeleteProductCommand extends Command
 {
@@ -26,9 +27,10 @@ class DeleteProductCommand extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ProductService $productService)
     {
         parent::__construct();
+        $this->productService = $productService;
     }
 
     /**
@@ -40,9 +42,8 @@ class DeleteProductCommand extends Command
     {
         $id = $this->option('id');
 
-        if (Product::destroy($id)) {
+        $this->productService->deleteById($id);
 
-            $this->info('Product Deleted');
-        }
+        $this->info('Product Deleted successfully');
     }
 }

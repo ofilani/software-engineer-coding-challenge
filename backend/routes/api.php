@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\ProductController;
+use App\Http\Controllers\Api\v1\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/price/{min}/{max}', [ProductController::class, 'searchByPrice']);
 
     Route::get('/products/category/{category_id}', [ProductController::class, 'searchByCategory']);
+
+
+    Route::resource('categories', CategoryController::class);
 });

@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Product;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Api\v1\ProductController;
+use App\Services\ProductService;
+
 
 class CreateProductCommand extends Command
 {
@@ -28,9 +27,10 @@ class CreateProductCommand extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ProductService $productService)
     {
         parent::__construct();
+        $this->productService = $productService;
     }
 
     /**
@@ -40,45 +40,16 @@ class CreateProductCommand extends Command
      */
     public function handle()
     {
-        $name = $this->option('name');
-        $description = $this->option('description');
-        $price = $this->option('price');
-        $image = $this->option('image');
+        $data = [
+            'name' => $this->option('name'),
+            'description' => $this->option('description'),
+            'price' => $this->option('price'),
+            'image' => $this->option('image')
+        ];
 
-        $validator = Validator::make([
-            'name' => $name,
-            'description' => $description,
-            'price' => $price,
-            'image' => $image,
-        ], [
-            'name' => ['required'],
-            'description' => ['required'],
-            'price' => ['required'],
-            'image' => ['required'],
-        ]);
+        $this->productService->create($data);
 
-        if ($validator->fails()) {
-            $this->info('Staff User not created. See error messages below:');
-
-            foreach ($validator->errors()->all() as $error) {
-                $this->error($error);
-            }
-            return 1;
-        }
-
-        $validator->errors()->all();
-
-
-        // $productController = new ProductController(null);
-
-        // Product::create([
-        //     'name' => $name,
-        //     'description' => $description,
-        //     'price' => $price,
-        //     'image' => $image
-        // ]);
-
-        $this->info('Product Created');
+        $this->info('Product Created successfully');
 
         return 0;
     }

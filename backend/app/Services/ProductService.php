@@ -24,9 +24,9 @@ class ProductService
 
     public function create($data)
     {
-        $products =  $this->productRepository->create($data);
+        $product =  $this->productRepository->create($data);
 
-        return $products;
+        return $product;
     }
 
 

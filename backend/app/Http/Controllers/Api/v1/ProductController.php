@@ -38,20 +38,19 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
 
-        $request->validated();
-
-        $data = array();
-
-        $data['name'] = $request->name;
-        $data['price'] = $request->price;
-        $data['description'] = $request->description;
-        $data['category_id'] = $request->category_id;
 
         if ($request->hasFile('image')) {
             $productImage = (new ImageService())->storeProductImage($request->name, $request->image);
         }
 
-        $data['image'] = $productImage;
+
+        $data = [
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'image' => $productImage
+        ];
 
         $product = $this->productService->create($data);
 
@@ -72,16 +71,6 @@ class ProductController extends Controller
         return response()->json($product, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-    }
 
     /**
      * Remove the specified resource from storage.
