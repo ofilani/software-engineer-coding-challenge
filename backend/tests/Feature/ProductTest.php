@@ -17,7 +17,7 @@ class ProductTest extends TestCase
      */
     public function test_get_request()
     {
-        $response = $this->withoutExceptionHandling()->get('/api/v1/products');
+        $response = $this->withoutExceptionHandling()->get('api/v1/products');
 
         $response->assertStatus(200);
     }
@@ -28,18 +28,17 @@ class ProductTest extends TestCase
      *
      * @return void
      */
+
+
     public function test_making_an_api_request()
     {
-        Storage::fake('products');
-
-        $file = UploadedFile::fake()->image('product.jpg');
-
-        $response = $this->postJson('/api/v1/products', ['name' => 'Sally', 'description' => 'Sally Description', 'price' => 29.99, 'image' => $file]);
-
-        $response
-            ->assertStatus(201)
-            ->assertExactJson([
-                'created' => true,
-            ]);
+        Storage::fake('photos');
+        $response = $this->post('api/v1/products', [
+            'name' => 'Product nae',
+            'price' => 99.99,
+            'description' => 'Description lerm ipsum',
+            'image' => UploadedFile::fake()->image('test.jpg')
+        ]);
+        $response->assertStatus(201);
     }
 }
