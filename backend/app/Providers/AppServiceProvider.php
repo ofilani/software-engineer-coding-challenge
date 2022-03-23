@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Repository\Eloquent\EloquentProductRepository;
 use App\Repository\Eloquent\EloquentCategoryRepository;
@@ -34,6 +35,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }
