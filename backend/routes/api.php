@@ -16,6 +16,11 @@ use App\Http\Controllers\Api\v1\CategoryController;
 |
 */
 
+
+Route::get('/', function () {
+    return response()->json('Hello World', 200);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
